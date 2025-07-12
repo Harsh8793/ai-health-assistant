@@ -1,12 +1,13 @@
 streamlit
 pytesseract
-opencv-python
-Pillow
 pdf2image
 PyMuPDF
-python-dotenv
+Pillow
 openai
 reportlab
 langchain
 faiss-cpu
 sentence-transformers
+python-dotenv
+streamlit-chat
+streamlit-ace
