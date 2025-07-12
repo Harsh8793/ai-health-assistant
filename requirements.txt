@@ -1,0 +1,12 @@
+streamlit
+pytesseract
+opencv-python
+Pillow
+pdf2image
+PyMuPDF
+python-dotenv
+openai
+reportlab
+langchain
+faiss-cpu
+sentence-transformers
