@@ -1,6 +1,8 @@
 services:
   - type: web
-    name: health-assistant
+    name: hackathon-ai
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run home.py --server.port 10000 --server.address 0.0.0.0
+    buildCommand: |
+      apt-get update && apt-get install -y tesseract-ocr
+      pip install -r requirements.txt
+    startCommand: streamlit run home.py --server.port $PORT --server.address 0.0.0.0
