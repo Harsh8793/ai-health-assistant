@@ -103,7 +103,7 @@ def run():
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
         return FAISS.load_local(DB_FAISS_PATH, embeddings, allow_dangerous_deserialization=True)
 
-    db = load_vector_db()
+    #db = load_vector_db()
 
     # 💬 Initialize session state for chat
     if "history" not in st.session_state:
@@ -114,9 +114,16 @@ def run():
         
         
     # 🔍 Similarity search using FAISS
+    # def get_similar_docs(query, k=2):
+    #     results = db.similarity_search(query, k=k)
+    #     return [doc.page_content for doc in results]
+    
+    
     def get_similar_docs(query, k=2):
+        db = load_vector_db()  # Lazy loading here
         results = db.similarity_search(query, k=k)
         return [doc.page_content for doc in results]
+
 
     # 🤖 Chatbot with RAG + DeepSeek
     def generate_rag_response(user_query):
