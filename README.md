@@ -23,14 +23,14 @@ It simplifies healthcare understanding by converting complex lab data into meani
 - Flags low/high test values with clear explanations.
 
 ### 4. AI Summary Generation
-- Uses OpenRouter LLMs like DeepSeek to generate a natural-language summary of the report.
+- Uses Groq's LLaMA 3 (LLaMA3-70B) model for fast, high-quality natural-language summary of the report.
 - Summary includes abnormal values, their meaning, and general tips.
 
 ### 5. Medical Q&A Chatbot
 - A Retrieval-Augmented Generation (RAG) chatbot using:
   - FAISS for vector search
   - LangChain with HuggingFace embeddings
-  - GROQ or DeepSeek for answering context-based medical questions
+  - GROQ for answering context-based medical questions
 - Users can export chat history as PDF.
 
 ### 6. Clean UI
@@ -64,9 +64,7 @@ pip install -r requirements.txt
 ### 2. Configure API keys
 Create a `.env` file with the following content:
 ```
-API_KEY=your_openrouter_or_openai_key
 GROQ_API=your_groq_api_key
-DEEPSEEK_API=your_deepseek_api_key
 ```
 
 ### 3. Run the app
