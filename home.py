@@ -167,7 +167,7 @@ def show_home():
     # Footer
     st.markdown("""
         <div class="main-footer">
-            Made with ❤️ by Health Assistant Team | Not for medical emergencies
+            Made by Statistician | Not for medical emergencies | Always consult a doctor for serious concerns
         </div>
     """, unsafe_allow_html=True)
 
@@ -176,10 +176,10 @@ def show_analyzer():
     load_dark_css()
     st.button("← Back to Home", key="back_analyzer", on_click=lambda: set_page("home"))
     
-    # Simply call your hack.py module
+    # Simply call  hack.py module
     try:
         import hack
-        hack.run()  # Assuming hack.py has a run() function
+        hack.run()  
     except Exception as e:
         st.error(f"Error loading Report Analyzer: {str(e)}")
 
@@ -188,10 +188,10 @@ def show_chatbot():
     load_dark_css()
     st.button("← Back to Home", key="back_chatbot", on_click=lambda: set_page("home"))
     
-    # Simply call your medibot.py module
+    # Simply call  medibot.py module
     try:
         import medibot
-        medibot.run()  # Assuming medibot.py has a run() function
+        medibot.run()  
     except Exception as e:
         st.error(f"Error loading Medical Chatbot: {str(e)}")
 

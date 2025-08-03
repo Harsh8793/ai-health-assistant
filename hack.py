@@ -159,7 +159,10 @@ def run():
     # 🚀 Main Logic
     if uploaded_file is not None:
         with st.spinner("🔍 Extracting report text..."):
-            text = extract_text(uploaded_file)
+            # text = extract_text(uploaded_file)
+            if "report_text" not in st.session_state:
+                st.session_state.report_text = extract_text(uploaded_file)
+            text = st.session_state.report_text
 
 
         
@@ -172,16 +175,69 @@ def run():
             for issue in flagged:
                 st.markdown(f"- {issue}")
 
+        # if st.button("🧠 Analyze with AI"):
+        #     with st.spinner(" Generating summary..."):
+        #         # summary = generate_summary(text)
+        #         if "summary_text" not in st.session_state:
+        #             st.session_state.summary_text = generate_summary(text)
+        #         summary = st.session_state.summary_text
+
+        #     st.success(" Summary Complete")
+        #     st.markdown("###  Plain Language Summary")
+        #     st.write(summary)
+        #     # st.download_button("Download Summary", summary, file_name="summary.txt")
+        #     st.download_button(" Download Summary", summary, file_name="summary.txt")
+
+        #     st.markdown("### Ask a question about your report")
+        #     user_question = st.text_input("Enter your question", placeholder="e.g. What does a low MCH mean?")
+
         if st.button("🧠 Analyze with AI"):
-            with st.spinner("🤖 Generating summary..."):
-                summary = generate_summary(text)
+            with st.spinner(" Generating summary..."):
+                st.session_state.summary_text = generate_summary(text)
+
+        # Show results if summary exists
+        if "summary_text" in st.session_state:
+            summary = st.session_state.summary_text
+
             st.success("✅ Summary Complete")
             st.markdown("### 📝 Plain Language Summary")
             st.write(summary)
             st.download_button("📥 Download Summary", summary, file_name="summary.txt")
 
+            st.markdown("### ❓ Ask a question about your report")
+            user_question = st.text_input("Enter your question", placeholder="e.g. What does a low MCH mean?")
+
+            if user_question:
+                with st.spinner("🤖 Thinking..."):
+                    followup_prompt = f"""
+        You are a medical assistant. The following is a medical report:
+
+        {st.session_state.report_text}
+
+        Summary:
+        {summary}
+
+        The user has this question about their report:
+        \"{user_question}\"
+
+        Provide a clear and medically-informed answer, in layperson terms if possible.
+        """
+
+                    response = client.chat.completions.create(
+                        model="deepseek/deepseek-r1:free",
+                        messages=[
+                            {"role": "system", "content": "You are a medical assistant helping explain a health report."},
+                            {"role": "user", "content": followup_prompt}
+                        ]
+                    )
+                    answer = response.choices[0].message.content.strip()
+                    st.markdown("### 💬 Answer to Your Question")
+                    st.write(answer)
+
+
+    
         st.markdown(
-        "<hr><small>⚕️ Built with 💡 by [Your Team Name or Name]</small>",
+        "<hr><small> Built by Statistician</small>",
         unsafe_allow_html=True
     )
 

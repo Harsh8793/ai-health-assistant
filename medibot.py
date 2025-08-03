@@ -14,7 +14,7 @@ def run():
     from openai import OpenAI
     from langchain_community.vectorstores import FAISS
     from langchain.embeddings import HuggingFaceEmbeddings
-    # 🌱 Load environment variables
+    # Load environment variables
     import streamlit as st
 
     load_dotenv()
@@ -87,8 +87,8 @@ def run():
         return buffer
 
 
-    # ✅ MUST be first Streamlit command
-    #st.set_page_config(page_title="📚Medical Chatbot", layout="centered")
+    #  MUST be first Streamlit command
+    #st.set_page_config(page_title="Medical Chatbot", layout="centered")
 
 
 
@@ -97,7 +97,7 @@ def run():
 
 
 
-    # 🧠 Load FAISS Vector DB
+    # Load FAISS Vector DB
     @st.cache_resource
     def load_vector_db():
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -105,7 +105,7 @@ def run():
 
     #db = load_vector_db()
 
-    # 💬 Initialize session state for chat
+    #  Initialize session state for chat
     if "history" not in st.session_state:
         st.session_state.history = []
 
@@ -113,19 +113,19 @@ def run():
         st.session_state.injected_prompt = None
         
         
-    # 🔍 Similarity search using FAISS
+    # Similarity search using FAISS
     # def get_similar_docs(query, k=2):
     #     results = db.similarity_search(query, k=k)
     #     return [doc.page_content for doc in results]
     
     
-    def get_similar_docs(query, k=2):
+    def get_similar_docs(query, k=3):
         db = load_vector_db()  # Lazy loading here
         results = db.similarity_search(query, k=k)
         return [doc.page_content for doc in results]
 
 
-    # 🤖 Chatbot with RAG + DeepSeek
+    # Chatbot with RAG + DeepSeek
     def generate_rag_response(user_query):
         casual_responses = {
             "hi": "👋 Hello! How can I assist you with a medical question today?",
@@ -197,7 +197,7 @@ def run():
     # 🎨 Streamlit UI
     # =========================
 
-    st.title("💬 WellAI")
+    st.title("WellAI")
     # Sticky footer CSS + HTML
     st.markdown(
         """
@@ -206,19 +206,20 @@ def run():
             position: fixed;
             bottom: 0;
             width: 100%;
-            padding: 8px 150px;
+            padding: 5px 0;
             background-color: #0e1117;
-            text-align: left;
+            text-align: center;
             font-size: 1.23rem;
             color: gray;
             z-index: 100;
             border-top: 1px solid #333;
             display: flex;
+            justify-content: center;
             align-items: center;
         }
         </style>
         <div class="footer" role="contentinfo">
-            ⚕️ Smart Health Chatbot | Created by <strong>Statistician</strong>
+            Smart Health Chatbot
         </div>
         """,
         unsafe_allow_html=True
@@ -234,7 +235,7 @@ def run():
         st.markdown("## 🧠 WellAI Info")
         st.markdown("Powered by advanced AI, this assistant answers medical questions using knowledge from curated medical textbooks.")
 
-        if st.button("🗑️ Clear Chat History"):
+        if st.button(" Clear Chat History"):
             st.session_state.history = []
             st.success("History cleared! Refreshing...")
             st.rerun()
@@ -252,7 +253,7 @@ def run():
 
 
 
-    # 🧾 Display chat history in ChatGPT-style
+    # Display chat history 
     for q, a in st.session_state.history:
         with st.chat_message("user"):
             st.markdown(q)
@@ -271,24 +272,11 @@ def run():
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        with st.spinner("🤖 Thinking..."):
+        with st.spinner("Thinking..."):
             answer = generate_rag_response(prompt)
             st.session_state.history.append((prompt, answer))
 
         with st.chat_message("assistant"):
             st.markdown(answer)
 
-        # # ✅ Suggested follow-up buttons placed OUTSIDE chat_message block
-        # st.markdown("🤔 **You could also ask:**")
-        # col1, col2 = st.columns(2)
-        # with col1:
-        #     if st.button("🧠 What are the symptoms of insulin resistance?", key="follow1"):
-        #         st.session_state.injected_prompt = "What are the symptoms of insulin resistance?"
-        #         st.rerun()
-        # with col2:
-        #     if st.button("🧪 How is it diagnosed?", key="follow2"):
-        #         st.session_state.injected_prompt = "How is it diagnosed?"
-        #         st.rerun()
 
-
-                
