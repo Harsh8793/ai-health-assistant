@@ -112,15 +112,9 @@ def run():
     if "injected_prompt" not in st.session_state:
         st.session_state.injected_prompt = None
         
-        
-    # Similarity search using FAISS
-    # def get_similar_docs(query, k=2):
-    #     results = db.similarity_search(query, k=k)
-    #     return [doc.page_content for doc in results]
-    
-    
+
     def get_similar_docs(query, k=3):
-        db = load_vector_db()  # Lazy loading here
+        db = load_vector_db()  
         results = db.similarity_search(query, k=k)
         return [doc.page_content for doc in results]
 
@@ -128,18 +122,18 @@ def run():
     # Chatbot with RAG + DeepSeek
     def generate_rag_response(user_query):
         casual_responses = {
-            "hi": "👋 Hello! How can I assist you with a medical question today?",
-            "hello": "👋 Hello! How can I assist you?",
-            "hey": "👋 Hey there! Ready when you are.",
-            "good morning": "🌞 Good morning! What would you like to know?",
-            "good evening": "🌙 Good evening! Ask me any medical question.",
-            "good afternoon": "🌞 Good afternoon! How can I help?",
-            "yo": "👋 Hello! Medical questions welcome.",
-            "what's up": "👋 Not much! Ready to help with medical queries.",
-            "thanks": "😊 You're welcome! Let me know if you have more questions.",
-            "thank you": "🙏 Happy to help!",
-            "bye": "👋 Take care! Stay healthy.",
-            "goodbye": "👋 Goodbye! Let me know if you have more questions."
+            "hi": "Hello! How can I assist you with a medical question today?",
+            "hello": " Hello! How can I assist you?",
+            "hey": " Hey there! Ready when you are.",
+            "good morning": " Good morning! What would you like to know?",
+            "good evening": "Good evening! Ask me any medical question.",
+            "good afternoon": " Good afternoon! How can I help?",
+            "yo": " Hello! Medical questions welcome.",
+            "what's up": " Not much! Ready to help with medical queries.",
+            "thanks": " You're welcome! Let me know if you have more questions.",
+            "thank you": " Happy to help!",
+            "bye": " Take care! Stay healthy.",
+            "goodbye": " Goodbye! Let me know if you have more questions."
         }
 
         normalized_input = user_query.lower().strip()
@@ -147,7 +141,7 @@ def run():
             return casual_responses[normalized_input]
 
         if len(user_query.strip()) < 5:
-            return "❓ Could you please ask a more specific medical question?"
+            return "Could you please ask a more specific medical question?"
 
         context_docs = get_similar_docs(user_query)
         context = "\n\n".join(context_docs)
@@ -175,7 +169,7 @@ def run():
         # Try GROQ first
         try:
             response = groq_client.chat.completions.create(
-                model= "mixtral-8x7b-instruct", #"mixtral-8x7b-32768",
+                model= "llama3-70b-8192", #command-r-plus  #"mixtral-8x7b-32768", mixtral-8x7b-instruct
                 messages=messages
             )
             return response.choices[0].message.content.strip()
@@ -189,12 +183,12 @@ def run():
                 )
                 return response.choices[0].message.content.strip()
             except Exception as deepseek_error:
-                return f"❌ Both GROQ and DeepSeek failed. Details:\n- GROQ: {groq_error}\n- DeepSeek: {deepseek_error}"
+                return f" Both GROQ and DeepSeek failed. Details:\n- GROQ: {groq_error}\n- DeepSeek: {deepseek_error}"
 
 
 
     # =========================
-    # 🎨 Streamlit UI
+    #  Streamlit UI
     # =========================
 
     st.title("WellAI")
@@ -207,10 +201,10 @@ def run():
             bottom: 0;
             width: 100%;
             padding: 5px 0;
-            background-color: #0e1117;
+            background-color: #f5f5f5;
             text-align: center;
             font-size: 1.23rem;
-            color: gray;
+            color: #333;
             z-index: 100;
             border-top: 1px solid #333;
             display: flex;
@@ -260,7 +254,7 @@ def run():
         with st.chat_message("assistant"):
             st.markdown(a) 
     # Get input (typed or injected)
-    prompt = st.chat_input("💬 Ask a medical question:")
+    prompt = st.chat_input(" Ask a medical question:")
 
     # Override with injected prompt if set
     if st.session_state.injected_prompt:

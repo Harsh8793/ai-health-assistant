@@ -16,56 +16,56 @@ def set_page(page_name):
     st.session_state.page = page_name
 
 # Dark theme CSS
-def load_dark_css():
+def load_light_css():
     st.markdown("""
         <style>
             /* Main background */
             .stApp {
-                background-color: #0a0a0a;
-                color: #ffffff;
+                background-color: #f8f9fa;
+                color: #212529;
             }
-            
+
             /* Text colors */
             h1, h2, h3, h4, h5, h6, p, div, span {
-                color: #ffffff !important;
+                color: #212529 !important;
             }
-            
+
             /* Cards */
             .feature-card {
-                background: #1a1a1a !important;
+                background: #ffffff !important;
                 border-radius: 12px !important;
                 padding: 2rem !important;
-                border: 1px solid #333 !important;
+                border: 1px solid #ddd !important;
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
                 height: 100%;
             }
-            
+
             .feature-card:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2) !important;
-                border: 1px solid #00f2ff !important;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+                border: 1px solid #8a2be2 !important;
             }
-            
+
             .feature-icon {
                 font-size: 2.5rem;
                 margin-bottom: 1rem;
-                color: #00f2ff;
+                color: #8a2be2;
             }
-            
+
             .feature-title {
                 font-size: 1.5rem;
                 font-weight: 600;
                 margin-bottom: 1rem;
             }
-            
+
             .feature-desc {
-                color: #aaaaaa;
+                color: #555555;
                 line-height: 1.6;
             }
-            
+
             /* Buttons */
             .stButton>button {
-                background-color: #8a2be2 !important;  /* Purple color */
+                background-color: #8a2be2 !important;
                 color: white !important;
                 border-radius: 8px !important;
                 font-weight: 600 !important;
@@ -73,54 +73,53 @@ def load_dark_css():
                 padding: 0.5rem 1.5rem !important;
                 transition: all 0.3s ease !important;
             }
-            
+
             .stButton>button:hover {
-                background-color: #6a1bb0 !important;  /* Darker purple */
+                background-color: #6a1bb0 !important;
                 transform: scale(1.05);
-                box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+                box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
             }
-            
 
             /* Back button */
             .back-btn {
                 margin-bottom: 2rem;
             }
-            
+
             /* Header */
             .main-header {
                 text-align: center;
                 margin-bottom: 3rem;
             }
-            
+
             .main-header h1 {
                 font-size: 3rem;
-                background: linear-gradient(90deg, #00f2ff, #8a2be2);
+                background: linear-gradient(90deg, #8a2be2, #00f2ff);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 margin-bottom: 0.5rem;
             }
-            
+
             .main-header p {
-                color: #aaaaaa;
+                color: #666666;
                 font-size: 1.1rem;
                 max-width: 600px;
                 margin: 0 auto;
             }
-            
+
             /* Footer */
             .main-footer {
                 text-align: center;
                 margin-top: 4rem;
                 padding: 2rem 0;
-                color: #555555;
-                border-top: 1px solid #333;
+                color: #999999;
+                border-top: 1px solid #ddd;
             }
         </style>
     """, unsafe_allow_html=True)
 
 # Home Page
 def show_home():
-    load_dark_css()
+    load_light_css()
     
     # Header
     st.markdown("""
@@ -173,7 +172,7 @@ def show_home():
 
 # Report Analyzer Page
 def show_analyzer():
-    load_dark_css()
+    load_light_css()
     st.button("← Back to Home", key="back_analyzer", on_click=lambda: set_page("home"))
     
     # Simply call  hack.py module
@@ -185,7 +184,7 @@ def show_analyzer():
 
 # Chatbot Page
 def show_chatbot():
-    load_dark_css()
+    load_light_css()
     st.button("← Back to Home", key="back_chatbot", on_click=lambda: set_page("home"))
     
     # Simply call  medibot.py module
